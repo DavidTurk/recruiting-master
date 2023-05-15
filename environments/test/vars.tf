@@ -3,7 +3,7 @@
 #################################################
 variable "candidate_name" {
   description = "Hey! Thanks for working on this sample project. Let's start with your name."
-  default     = "YOUR_NAME"
+  default     = "Turk"
   type        = string
 }
 
