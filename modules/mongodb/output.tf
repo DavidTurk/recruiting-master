@@ -1,1 +1,1 @@
-output "mongo_private_ip" { value = aws_instance.main.private_ip }
+output "mongo_private_ip" { value = aws_instance.main[0].private_ip }

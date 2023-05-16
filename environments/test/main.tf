@@ -13,6 +13,11 @@ terraform {
   }
 }
 
+resource "aws_key_pair" "main" {
+  key_name = "main_ssh_key"
+  public_key = file("~/.ssh/main_ssh_key.pub")
+}
+
 module "vpc" {
   source = "../../modules/vpc"
 
@@ -63,7 +68,7 @@ module "mongodb" {
   mongo_volume_size = var.mongo_volume_size
 
   # How to provision it
-  mongo_provisioning_key = var.provisioning_key
+  mongo_provisioning_key = aws_key_pair.main.key_name
 
   # How to name and tag it
   mongo_tags = {
@@ -86,7 +91,7 @@ module "app" {
   app_subnet = module.subnets.public_subnet_id
 
   # How to provision it
-  app_provisioning_key            = var.provisioning_key
+  app_provisioning_key            = aws_key_pair.main.key_name
   app_associate_public_ip_address = var.app_associate_public_ip_address
   app_mongo_address               = module.mongodb.mongo_private_ip
 

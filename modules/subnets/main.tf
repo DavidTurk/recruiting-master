@@ -42,7 +42,7 @@ resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat_gateway_eip.id
   subnet_id = aws_subnet.public_subnets[0].id
 
-  tags = { Name = "terraform-nat-gateway"}
+  tags = merge(var.subnets_tags, { Name = "terraform-nat-gateway"})
 }
 
 #################################################
@@ -56,7 +56,7 @@ resource "aws_route_table" "public_subnet_rt" {
     gateway_id = var.subnets_target_vpc_igw_id
   }
  
-  tags = { Name = "terraform-public-route-table"}
+  tags = merge(var.subnets_tags, { Name = "terraform-public-route-table"})
 }
 
 #################################################
@@ -70,7 +70,7 @@ resource "aws_route_table" "private_subnet_rt" {
     gateway_id = aws_nat_gateway.main[0].id
   }
  
-  tags = { Name = "terraform-private-route-table"}
+  tags = merge(var.subnets_tags, { Name = "terraform-private-route-table"})
 }
 
 #################################################
