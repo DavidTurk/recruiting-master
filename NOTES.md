@@ -53,3 +53,15 @@ ___
 ## Opportunities for extension or modification
     We'd love to discuss how we can change this environment for the better, how it might change with scale, etc. Keep these in mind as you work and make a note of any great ideas!
 
+### Improvements, time, and the like
+The assignment asked to take no more than 4 hours, which I don't think I quite accomplished. As such, I didn't have time to make improvements or fix any of the issues I caused. Some likely points for improvement are:
+- Fixing the glaring SSH hole I opened to the public internet on the APP instance. :)
+- Using the `provisioning_key` variable. In the interest of simplicity and time I just placed the init scripts in the `user_data` field and let AWS take care of it.
+- Using the second private subnet. Likely an additional Mongo instance should go here (`mongo_count` > 1), as it stands this subnet exists but sits empty.
+- Along with the above, increasing the number of public subnets (and likely NAT Gateways) to >1 so all private subnets don't lose connectivity to the NAT Gateway in the unlikely even of an AZ outage.
+- Adding additional APP instances (and load balancing). Same with Mongo instances. This is likely necessary for scaling in the longer term.
+- Implement some form of caching if necessary to reduce load on the DB.
+- Authentication? Is the data sensitive? Do we need to limit access to various parts of our APP?
+- Deployment/Terraform should likely run from a CI/CD-type pipeline instead of local machines. The tf state file should be centralized similarly.
+- Any secrets or keys should be centralized in something like `Secrets Manager` or `Vault`
+- And I'm sure there are many more things
